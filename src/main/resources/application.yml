@@ -1,0 +1,31 @@
+weather-app:
+  api-key: ${API_KEY:you will be given this API key by the interviewers}
+  update-topic: report-events
+
+external-resources:
+  database:
+    url: localhost:5432
+    name: weather-app
+    username: weather-app
+    password: weather-app
+  kafka:
+    url: localhost:29092
+
+spring:
+  application:
+    name: weather-app
+    version: '@version@'
+  datasource:
+    pool-prepared-statements: true
+    url: jdbc:postgresql://${external-resources.database.url}/${external-resources.database.name}?useUnicode=true&characterEncoding=utf8&ApplicationName=${spring.application.name}
+    username: ${external-resources.database.username}
+    password: ${external-resources.database.password}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    generate-ddl: false
+    hibernate:
+      naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+      ddl-auto: create
+  kafka:
+    bootstrap-servers: ${external-resources.kafka.url}

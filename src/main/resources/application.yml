@@ -1,0 +1,31 @@
+indexing-app:
+  api-key: ${API_KEY:the interviewers will provide you with the key}
+  topic: match-events
+
+external-resources:
+  database:
+    url: localhost:5432
+    name: indexing-app
+    username: indexing-app
+    password: indexing-app
+  kafka:
+    url: localhost:29092
+
+spring:
+  application:
+    name: indexing-app
+    version: '@version@'
+  datasource:
+    pool-prepared-statements: true
+    url: jdbc:postgresql://${external-resources.database.url}/${external-resources.database.name}?useUnicode=true&characterEncoding=utf8&ApplicationName=${spring.application.name}
+    username: ${external-resources.database.username}
+    password: ${external-resources.database.password}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    generate-ddl: false
+    hibernate:
+      naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+      ddl-auto: create
+  kafka:
+    bootstrap-servers: ${external-resources.kafka.url}

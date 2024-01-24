@@ -12,12 +12,14 @@ Identify issues, and discuss potential solutions to those issues with the interv
 Some solutions can be done by adding/modifying a few lines of code, we would ask you to do so while sharing your screen.
 Other, larger solutions don't need implementation, just discuss it like you would discuss it with a colleague.
 
+You don't need to check for creating new, useful endpoints or other domain-changes, we are interested in what code or architectural changes would you make in the repository.
+
 ## Project description
 
-This application is part of a larger development, its main purpose is connecting to a 3rd party API, store the data it received, and the ability to create reports based on it.
+The IndexingApplication's purpose is to load data from 2 imaginary social networks - the DadJokes and the ChuckNorrisJokes sites, and match the new contents with those that our users are interested in.
+It's indexing API will be called periodically from another service, while the users can call other APIs to get all stored contents, and create or delete their own queries.
 
-The application is also expected to send out messages based on reports, since that is needed by a downstream system to make sure that customer billing is kept up-to-date.
-Initially, the only report that is supported will be calculating the averages over a period of time.
+In case it finds a content that one of our users is interested in, it sends out a Kafka message to notify downstream systems of the match.
 
 ## Helpful commands
 
@@ -32,16 +34,8 @@ Then add the provided API-key to the service, and start up the project in your p
 
 Listen on sent out Kafka messages:
 
-`docker run -it --rm --network docker_weather-app confluentinc/cp-kafka /bin/kafka-console-consumer --bootstrap-server kafka:9092 --topic report-events`
+`docker run -it --rm --network docker_indexing-app confluentinc/cp-kafka /bin/kafka-console-consumer --bootstrap-server kafka:9092 --topic match-events`
 
 ### Sending messages
 
-See assigned postman collection, use the sprindoc frontend at http://localhost:8080/swagger-ui/index.html, or use CURL:
-
-```shell
-curl --location 'http://localhost:8080/weather/Budapest'
-curl --location --request POST 'http://localhost:8080/weather/Budapest/delete'
-curl --location --request POST 'http://localhost:8080/weather/Budapest/average?from=2023-12-12&to=2023-12-14&userId=myId'
-curl --location 'http://localhost:8080/report?city=Budapest&user=myId'
-```
-
+Use the springdoc frontend at http://localhost:8080/swagger-ui/index.html

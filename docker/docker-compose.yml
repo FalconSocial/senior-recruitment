@@ -3,7 +3,7 @@ services:
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     networks:
-      - weather-app
+      - indexing-app
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -13,7 +13,7 @@ services:
   kafka:
     image: confluentinc/cp-kafka:latest
     networks:
-      - weather-app
+      - indexing-app
     depends_on:
       - zookeeper
     ports:
@@ -26,23 +26,23 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_CONFLUENT_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_CREATE_TOPICS: "report-events:1:1"
+      KAFKA_CREATE_TOPICS: "indexing-app:1:1"
 
   database:
     image: postgres:latest
     networks:
-      - weather-app
+      - indexing-app
     container_name: "database"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U weather-app -P weather-app"]
+      test: ["CMD-SHELL", "pg_isready -U indexing-app -P indexing-app"]
       interval: 3s
       timeout: 2s
       retries: 5
     environment:
-      - POSTGRES_PASSWORD=weather-app
-      - POSTGRES_USER=weather-app
+      - POSTGRES_PASSWORD=indexing-app
+      - POSTGRES_USER=indexing-app
     ports:
       - "5432:5432"
 
 networks:
-  weather-app:
+  indexing-app:

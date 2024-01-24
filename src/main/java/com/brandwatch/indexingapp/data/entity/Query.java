@@ -1,4 +1,4 @@
-package com.brandwatch.weatherapp.data.entity;
+package com.brandwatch.indexingapp.data.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,23 +9,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "weather_sample")
+@Table(name = "query")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WeatherSample {
+public class Query {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private Instant sampleTime;
+    private String queryText;
 
-    private String city;
+    private String network;
 
-    private double sample;
+    private String userId;
 }

@@ -1,4 +1,4 @@
-package com.brandwatch.weatherapp.data.entity;
+package com.brandwatch.indexingapp.data.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,27 +9,23 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "average_result")
+@Table(name = "content")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AverageReport {
+public class Content {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private LocalDate averageFrom;
+    private Instant createTime;
 
-    private LocalDate averageTo;
+    private String network;
 
-    private String city;
-
-    private String userId;
-
-    private double average;
+    private String content;
 }

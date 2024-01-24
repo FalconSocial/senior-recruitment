@@ -1,19 +1,19 @@
-weather-app:
-  api-key: ${API_KEY:you will be given this API key by the interviewers}
-  update-topic: report-events
+indexing-app:
+  api-key: ${API_KEY:VxzjTgsgYSvWYYRon2Fatw==lxMOr2TPS96MXS9J}
+  topic: match-events
 
 external-resources:
   database:
     url: localhost:5432
-    name: weather-app
-    username: weather-app
-    password: weather-app
+    name: indexing-app
+    username: indexing-app
+    password: indexing-app
   kafka:
     url: localhost:29092
 
 spring:
   application:
-    name: weather-app
+    name: indexing-app
     version: '@version@'
   datasource:
     pool-prepared-statements: true

@@ -1,6 +1,6 @@
-package com.brandwatch.weatherapp;
+package com.brandwatch.indexingapp;
 
-import com.brandwatch.weatherapp.configuration.WeatherAppConfiguration;
+import com.brandwatch.indexingapp.configuration.IndexingAppConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -9,15 +9,15 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableJpaRepositories
-@EnableConfigurationProperties(WeatherAppConfiguration.class)
+@EnableConfigurationProperties(IndexingAppConfiguration.class)
 @EnableTransactionManagement
-public class WeatherApplication {
+public class IndexingApplication {
 
-    protected WeatherApplication() {
+    protected IndexingApplication() {
     }
 
     public static void main(final String[] args) {
-        SpringApplication.run(WeatherApplication.class, args);
+        SpringApplication.run(IndexingApplication.class, args);
     }
 
 }

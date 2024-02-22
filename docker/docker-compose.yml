@@ -26,7 +26,7 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_CONFLUENT_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_CREATE_TOPICS: "indexing-app:1:1"
+      KAFKA_CREATE_TOPICS: "match-events:1:1"
 
   database:
     image: postgres:latest

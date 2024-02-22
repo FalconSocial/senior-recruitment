@@ -35,7 +35,11 @@ public abstract class IndexingService {
     public void indexAndSendNotifications() {
         try {
             List<Content> contents = this.loadNewContentsForNetwork();
-            contents.forEach(this::saveContentAndSendNotifications);
+            contents.forEach(content -> {
+                Content savedContent = this.contentRepository.save(content);
+                List<Query> matchingQueries = getMatchingQueries(savedContent);
+                sendNotificationsForQueries(savedContent, matchingQueries);
+            });
         } catch (Throwable t) {
             log.error("Indexing failed with error: ", t);
         }
@@ -45,13 +49,13 @@ public abstract class IndexingService {
         return this.contentRepository.findByNetwork(this.getNetwork());
     }
 
-    private void saveContentAndSendNotifications(Content content) {
-        this.contentRepository.saveAndFlush(content);
-
+    private List<Query> getMatchingQueries(Content content) {
         List<Query> matchingQueries = this.queryRepository.findByNetwork(this.getNetwork()).stream()
                 .filter(query -> content.getContent().toLowerCase().contains(query.getQueryText()))
                 .collect(Collectors.toList());
-
+        return matchingQueries;
+    }
+    private void sendNotificationsForQueries(Content content, List<Query> matchingQueries) {
         matchingQueries.stream()
                 .map(query -> new MatchedQueryEventDTO(query.getId(), this.getNetwork(), content.getContent()))
                 .forEach(event -> {

@@ -23,6 +23,7 @@ import java.util.Map;
 @Service
 public class ChuckNorrisIndexingService extends IndexingService {
 
+    public static final String NETWORK_NAME = "chucknorris";
     private final RestTemplate restTemplate = new RestTemplate();
     public ChuckNorrisIndexingService(IndexingAppConfiguration configuration, ContentRepository contentRepository, QueryRepository queryRepository, KafkaTemplate<String, String> kafkaTemplate, ObjectMapper objectMapper) {
         super(configuration, contentRepository, queryRepository, kafkaTemplate, objectMapper);
@@ -30,11 +31,13 @@ public class ChuckNorrisIndexingService extends IndexingService {
 
     @Override
     public String getNetwork() {
-        return "chucknorris";
+        return NETWORK_NAME;
     }
 
     @Override
     protected List<Content> loadNewContentsForNetwork() throws URISyntaxException {
+        // APIDoc: https://api-ninjas.com/api/chucknorris
+
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.set("X-Api-Key", this.getConfiguration().apiKey());
         RequestEntity request = new RequestEntity<>(requestHeaders, HttpMethod.GET, new URI("https://api.api-ninjas.com/v1/chucknorris"));

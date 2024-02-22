@@ -26,6 +26,7 @@ import java.util.stream.Stream;
 @Service
 public class DadJokeIndexingService extends IndexingService {
 
+    public static final String NETWORK_NAME = "dadjoke";
     private final RestTemplate restTemplate = new RestTemplate();
     public DadJokeIndexingService(IndexingAppConfiguration configuration, ContentRepository contentRepository, QueryRepository queryRepository, KafkaTemplate<String, String> kafkaTemplate, ObjectMapper objectMapper) {
         super(configuration, contentRepository, queryRepository, kafkaTemplate, objectMapper);
@@ -33,18 +34,20 @@ public class DadJokeIndexingService extends IndexingService {
 
     @Override
     public String getNetwork() {
-        return "dadjoke";
+        return NETWORK_NAME;
     }
 
     @Override
     protected List<Content> loadNewContentsForNetwork() throws URISyntaxException {
+        // APIdoc: https://api-ninjas.com/api/dadjokes
+
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.set("X-Api-Key", this.getConfiguration().apiKey());
         RequestEntity request = new RequestEntity<>(requestHeaders, HttpMethod.GET, new URI("https://api.api-ninjas.com/v1/dadjokes?limit=5"));
         ResponseEntity<List> response = this.restTemplate.exchange(request, List.class);
         List<Map> responseBody = response.getBody();
         return responseBody.stream()
-                .map(element -> new Content(null, Instant.now(), "dadjoke", String.valueOf(element.get("joke"))))
+                .map(element -> new Content(null, Instant.now(), NETWORK_NAME, String.valueOf(element.get("joke"))))
                 .collect(Collectors.toList());
     }
 }

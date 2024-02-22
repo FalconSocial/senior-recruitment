@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,7 +26,10 @@ public class IndexingController {
     @GetMapping("/index/{network}/index")
     // Index data for the given network, and match queries for found new contents
     public ResponseEntity indexData(@PathVariable String network) {
-        new Thread(() -> this.indexingServices.stream().filter(service -> service.getNetwork().equalsIgnoreCase(network)).forEach(IndexingService::indexAndSendNotifications)).run();
+        new Thread(() -> this.indexingServices.stream()
+                .filter(service -> service.getNetwork().equalsIgnoreCase(network))
+                .forEach(IndexingService::indexAndSendNotifications))
+                .run();
         return ResponseEntity.ok().build();
     }
 
@@ -40,14 +42,19 @@ public class IndexingController {
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
     @PostMapping("/query/create")
     // Create a new query for the user
-    public ResponseEntity<UUID> createQuery(@RequestParam String network, @RequestParam String matchText, @RequestParam String user) {
+    public ResponseEntity<UUID> createQuery(@RequestParam String network,
+                                            @RequestParam String matchText,
+                                            @RequestParam String user) {
         return ResponseEntity.ok(this.queryService.create(network, matchText, user));
     }
+
     @PostMapping("/query/delete")
     // Delete queries based on ID or user
-    public ResponseEntity<Query> calculateAverages(@RequestParam(required = false) String user, @RequestParam(required = false) UUID id) {
+    public ResponseEntity<Query> deleteQuery(@RequestParam(required = false) String user,
+                                             @RequestParam(required = false) UUID id) {
         if (user == null) {
             this.queryService.delete(id);
         } else {

@@ -13,6 +13,7 @@ Some solutions can be done by adding/modifying a few lines of code, we would ask
 Other, larger solutions don't need implementation, just discuss it like you would discuss it with a colleague.
 
 You don't need to check for creating new, useful endpoints or other domain-changes, we are interested in what code or architectural changes would you make in the repository.
+Also keep a look out for scalability and stability issues.
 
 ## Project description
 
